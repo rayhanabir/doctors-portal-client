@@ -3,6 +3,7 @@ import Navigation from '../../Shared/Navigation/Navigation';
 import AppointmentBanner from '../AppointBanner/AppointmentBanner';
 import Banner from '../Banner/Banner';
 import Blog from '../Blog/Blog';
+import Contact from '../Contact/Contact';
 import Doctors from '../Doctors/Doctors';
 import Services from '../Services/Services';
 import Testimonials from '../Testimonials/Testimonials';
@@ -19,6 +20,7 @@ const Home = () => {
            <Testimonials/>
            <Blog/>
            <Doctors/>
+           <Contact/>
           
         </div>
     );

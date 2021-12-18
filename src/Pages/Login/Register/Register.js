@@ -1,14 +1,18 @@
-import { Button, CircularProgress, Container, Grid, Typography } from '@mui/material';
+import { Button, CircularProgress, Container, Grid, Typography, Alert} from '@mui/material';
 import React from 'react';
 import loginImg from '../../../images/login.png';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink , useHistory, useLocation} from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 
 const Register = () => {
     const [loginData, setLoginData] = useState({});
-    const {registerUser, isLoading} = useAuth();
+    const {registerUser, isLoading, user, authError} = useAuth();
+
+    const history = useHistory();
+    const location = useLocation();
+
     const handleOnChange = e =>{
         const field = e.target.name;
         const value = e.target.value;
@@ -22,7 +26,7 @@ const Register = () => {
            alert('password did not match')
            return;
        }
-       registerUser(loginData.email, loginData.password)
+       registerUser(loginData.email, loginData.password, location , history)
 
         
         e.preventDefault();
@@ -71,6 +75,8 @@ const Register = () => {
                     </NavLink>
                    </form>}
                    {isLoading && <CircularProgress />}
+                   {user?.email &&<Alert severity="success">User Created Succesfully</Alert>}
+                   {authError && <Alert severity="error">{authError}</Alert>}
                     </Grid>
 
 

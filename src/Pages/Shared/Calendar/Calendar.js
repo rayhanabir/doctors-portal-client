@@ -10,7 +10,7 @@ const Calendar = ({date, setDate}) => {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
       <StaticDatePicker
         displayStaticWrapperAs="desktop"
-        value={Date}
+        value={date}
         onChange={(newValue) => {
           setDate(newValue);
         }}

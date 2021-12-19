@@ -12,7 +12,7 @@ import { useLocation } from 'react-router-dom';
 
 const Login = () => {
     const [loginData, setLoginData] = useState({});
-        const {user,logInUser,isLoading, authError} = useAuth();
+        const {user,logInUser,isLoading, googleSignIn, authError} = useAuth();
 
         const history = useHistory();
         const location = useLocation();
@@ -30,10 +30,13 @@ const Login = () => {
         e.preventDefault();
 
     }
+
+    const handleGoogleSignIn =()=>{
+        googleSignIn(location, history)
+    }
     return (
         
-            <Container>
-                    
+            <Container>         
                 <Grid container spacing={2} style={{display:'flex', alignItems:'center'}}>
                     
                     <Grid item xs={12} md={6}>
@@ -65,6 +68,9 @@ const Login = () => {
                     <Button style={{textDecoration:'none'}} variant="text">New User?Please Register</Button>
                     </NavLink>
                    </form>}
+                   <div>___OR___</div>
+                   <Button onClick={handleGoogleSignIn} sx={{width:"50%",mt:2}} variant='contained'>Sign in Using Google</Button>
+
                     {isLoading && <CircularProgress/>}
                     {user?.email &&<Alert severity="success">User Login Succesfully</Alert>}
                     {authError && <Alert severity="error">{authError}</Alert>}

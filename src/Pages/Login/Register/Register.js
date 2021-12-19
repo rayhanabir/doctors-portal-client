@@ -8,28 +8,38 @@ import useAuth from '../../../hooks/useAuth';
 
 const Register = () => {
     const [loginData, setLoginData] = useState({});
-    const {registerUser, isLoading, user, authError} = useAuth();
-
+    const {registerUser, isLoading, user, authError, googleSignIn} = useAuth();
+    console.log(loginData)
     const history = useHistory();
     const location = useLocation();
 
-    const handleOnChange = e =>{
+    const handleOnBlur = e =>{
         const field = e.target.name;
         const value = e.target.value;
         const newLoginData = {...loginData};
+        
         newLoginData[field] = value;
+        
         setLoginData(newLoginData);
     }
 
+    //google sign in
+
+    const handleGoogleSignIn =()=>{
+        googleSignIn(location, history)
+    }
+
     const handleLoginSubmit = e =>{
+        e.preventDefault();
+        console.log(loginData)
        if(loginData.password !== loginData.password2){
            alert('password did not match')
            return;
        }
-       registerUser(loginData.email, loginData.password, location , history)
+       registerUser(loginData.email, loginData.password, loginData.name, history)
 
         
-        e.preventDefault();
+        
     }
     return (
             <Container>
@@ -46,10 +56,19 @@ const Register = () => {
                     <TextField 
                     sx={{width:"75%", m:1}}
                     id="standard-basic" 
+                    type= 'text'
+                    name='name'
+                    label="Name"
+                    onBlur={handleOnBlur}
+                    variant="standard" />
+
+                    <TextField 
+                    sx={{width:"75%", m:1}}
+                    id="standard-basic" 
                     type= 'email'
                     name='email'
                     label="Email"
-                    onChange={handleOnChange}
+                    onBlur={handleOnBlur}
                     variant="standard" />
 
                     <TextField 
@@ -58,15 +77,16 @@ const Register = () => {
                     label="Password"
                     name='password'
                     type='password'
-                    onChange={handleOnChange}
+                    onBlur={handleOnBlur}
                     variant="standard" />
+
                     <TextField 
                     sx={{width:"75%", m:1}}
                     id="standard-basic" 
                     label="ReType Your Password"
                     name='password2'
                     type='password'
-                    onChange={handleOnChange}
+                    onBlur={handleOnBlur}
                     variant="standard" />
 
                     <Button sx={{width:"75%"}} variant='contained' type="submit">Create Account</Button>
@@ -74,6 +94,9 @@ const Register = () => {
                     <Button style={{textDecoration:'none'}} variant="text">Already Login?Please Login</Button>
                     </NavLink>
                    </form>}
+                        <div>_____OR______</div>
+                   <Button onClick={handleGoogleSignIn} sx={{width:"50%", mt:2}} variant='contained'>Google Sign In</Button>
+
                    {isLoading && <CircularProgress />}
                    {user?.email &&<Alert severity="success">User Created Succesfully</Alert>}
                    {authError && <Alert severity="error">{authError}</Alert>}

@@ -9,7 +9,6 @@ import useAuth from '../../../hooks/useAuth';
 const Register = () => {
     const [loginData, setLoginData] = useState({});
     const {registerUser, isLoading, user, authError, googleSignIn} = useAuth();
-    console.log(loginData)
     const history = useHistory();
     const location = useLocation();
 
@@ -31,7 +30,7 @@ const Register = () => {
 
     const handleLoginSubmit = e =>{
         e.preventDefault();
-        console.log(loginData)
+        
        if(loginData.password !== loginData.password2){
            alert('password did not match')
            return;

@@ -9,6 +9,7 @@ const useFirebase = () =>{
     const [authError, setAuthError] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     
+    
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
     const registerUser = (email, password, name , history) =>{
@@ -18,6 +19,8 @@ const useFirebase = () =>{
             setAuthError('')
             const newUser = {email, displayName:name}
             setUser(newUser)
+            //save data to database
+            saveUser(email, name)
            
             //send name to firebase
 
@@ -58,7 +61,9 @@ const useFirebase = () =>{
       setIsLoading(true)
       signInWithPopup(auth, googleProvider)
           .then((result) => {
+            const user = result.user;
             setAuthError('')
+            saveGoogleLoginUser(user.email, user.displayName)
             const destination = location?.state?.from || '/'
             history.push(destination);
           }).catch((error) => {
@@ -76,6 +81,36 @@ const useFirebase = () =>{
             console.log(error.message)
           })
           .finally(()=>setIsLoading(false));
+    }
+
+    //function form new user to set db
+    
+    const saveUser = (email, displayName) =>{
+          const user = {email:email, displayName:displayName}
+          fetch('http://localhost:5000/users',{
+            method:'POST',
+            headers: {
+              'Content-type': 'application/json'
+            },
+            body:JSON.stringify(user)
+          })
+          .then(res => res.json())
+          .then(data=>console.log(data))
+    }
+
+    //function for user who login using google 
+
+    const saveGoogleLoginUser = (email, displayName) =>{
+          const user = {email:email, displayName:displayName}
+          fetch('http://localhost:5000/users',{
+            method:'PUT',
+            headers: {
+              'Content-type': 'application/json'
+            },
+            body:JSON.stringify(user)
+          })
+          .then(res => res.json())
+          .then(data=>console.log(data))
     }
 
     //observer

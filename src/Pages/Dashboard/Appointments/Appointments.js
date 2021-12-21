@@ -20,16 +20,17 @@ const Appointments = ({date}) => {
         .then(res => res.json())
         .then(data => setAppointments(data));
     },[date])
-    
+
     return (
         <div>
             <Typography variant='h4'>
-                Appointments{appointments.length}
+                Appointments : {appointments.length}
             </Typography>
             <TableContainer component={Paper}>
       <Table sx={{ minWidth: 400 }} aria-label="appointments table">
         <TableHead>
           <TableRow>
+            <TableCell align="left">Name</TableCell>
             <TableCell align="left">Service Name</TableCell>
             <TableCell align="left">time</TableCell>
             <TableCell align="right">Action</TableCell>
@@ -43,6 +44,7 @@ const Appointments = ({date}) => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               
+              <TableCell align="left">{row.patientName}</TableCell>
               <TableCell align="left">{row.serviceName}</TableCell>
               <TableCell align="left">{row.time}</TableCell>
               <TableCell align="right">Delete</TableCell>

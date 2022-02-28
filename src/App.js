@@ -31,9 +31,9 @@ function App() {
           <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}>
             <Route exact path="/dashboard" element={<DashboardHome/>}>
             </Route>
-            <Route path={`/dashboard/:makeAdmin`} element={<AdminRoute><MakeAdmin/></AdminRoute>}>   
+            <Route path={`/dashboard/makeAdmin`} element={<AdminRoute><MakeAdmin/></AdminRoute>}>   
             </Route>
-            <Route path={`/dashboard/:addDoctor`} element={<AdminRoute><AddDoctor/></AdminRoute>}>
+            <Route path={`/dashboard/addDoctor`} element={<AdminRoute><AddDoctor/></AdminRoute>}>
             </Route>
           </Route>
         </Routes>

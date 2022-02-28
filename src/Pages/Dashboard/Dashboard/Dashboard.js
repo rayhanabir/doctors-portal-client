@@ -1,32 +1,23 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { Button } from '@mui/material';
-import {
-    Switch,
-    Route,
-    Link,
-    useRouteMatch
-  } from "react-router-dom";
-import MakeAdmin from '../MakeAdmin/MakeAdmin';
-import DashboardHome from '../DashboardHome/DashboardHome';
-import AddDoctor from '../AddDoctor/AddDoctor';
-import useAuth from '../../../hooks/useAuth';
-import AdminRoute from '../../Login/AdminRoute/AdminRoute';
+import * as React from "react";
+import PropTypes from "prop-types";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MailIcon from "@mui/icons-material/Mail";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { Button } from "@mui/material";
+import { Link, Outlet } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 
 
 const drawerWidth = 200;
@@ -37,16 +28,16 @@ function Dashboard(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  let { path, url } = useRouteMatch();
-  const {admin} = useAuth()
+
+  const { admin } = useAuth();
 
   const drawer = (
     <div>
       <Toolbar />
-      
+
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -55,30 +46,31 @@ function Dashboard(props) {
           </ListItem>
         ))}
       </List>
-      <Link to={`${url}`}>
-            <Button color='inherit'>Dashboard</Button>
+      <Link to="/dashboard">
+        <Button color="inherit">Dashboard</Button>
       </Link>
       <Link to="/appointment">
-            <Button color='inherit'>Appointment</Button>
+        <Button color="inherit">Appointment</Button>
       </Link>
 
-      {admin&&<Box>
-        <Link to={`${url}/makeAdmin`}>
-            <Button color='inherit'>Make Admin</Button>
-      </Link>
-      <Link to={`${url}/addDoctor`}>
-            <Button color='inherit'>Add Doctor</Button>
-      </Link>
-        </Box>}
-      
-      
+      {admin && (
+        <Box>
+          <Link to={`/dashboard/makeAdmin`}>
+            <Button color="inherit">Make Admin</Button>
+          </Link>
+          <Link to={`/dashboard/addDoctor`}>
+            <Button color="inherit">Add Doctor</Button>
+          </Link>
+        </Box>
+      )}
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -93,7 +85,7 @@ function Dashboard(props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -107,7 +99,6 @@ function Dashboard(props) {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        
         <Drawer
           container={container}
           variant="temporary"
@@ -117,8 +108,11 @@ function Dashboard(props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
         >
           {drawer}
@@ -126,8 +120,11 @@ function Dashboard(props) {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "none", sm: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
           }}
           open
         >
@@ -136,22 +133,14 @@ function Dashboard(props) {
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}
       >
         <Toolbar />
-
-        <Switch>
-        <Route exact path={path}>
-          <DashboardHome/>
-        </Route>
-        <AdminRoute path={`${path}/:makeAdmin`}>
-          <MakeAdmin></MakeAdmin>
-        </AdminRoute>
-        <AdminRoute path={`${path}/:addDoctor`}>
-          <AddDoctor></AddDoctor>
-        </AdminRoute>
-      </Switch>
-    
+          <Outlet></Outlet>
       </Box>
     </Box>
   );

@@ -3,13 +3,13 @@ import React from 'react';
 import loginImg from '../../../images/login.png';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
-import { NavLink , useHistory, useLocation} from 'react-router-dom';
+import { NavLink , useNavigate, useLocation} from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 
 const Register = () => {
     const [loginData, setLoginData] = useState({});
     const {registerUser, isLoading, user, authError, googleSignIn} = useAuth();
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const handleOnBlur = e =>{
@@ -25,7 +25,7 @@ const Register = () => {
     //google sign in
 
     const handleGoogleSignIn =()=>{
-        googleSignIn(location, history)
+        googleSignIn(location, navigate)
     }
 
     const handleLoginSubmit = e =>{
@@ -35,7 +35,7 @@ const Register = () => {
            alert('password did not match')
            return;
        }
-       registerUser(loginData.email, loginData.password, loginData.name, history)
+       registerUser(loginData.email, loginData.password, loginData.name, navigate)
 
         
         

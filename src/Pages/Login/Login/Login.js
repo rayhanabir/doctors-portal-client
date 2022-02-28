@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 
@@ -14,7 +14,7 @@ const Login = () => {
     const [loginData, setLoginData] = useState({});
         const {user,logInUser,isLoading, googleSignIn, authError} = useAuth();
 
-        const history = useHistory();
+        const navigate = useNavigate()
         const location = useLocation();
 
         const handleOnChange = e =>{
@@ -26,13 +26,13 @@ const Login = () => {
     }
 
     const handleLoginSubmit = e =>{
-        logInUser(loginData.email, loginData.password, location, history)
+        logInUser(loginData.email, loginData.password, location, navigate)
         e.preventDefault();
 
     }
 
     const handleGoogleSignIn =()=>{
-        googleSignIn(location, history)
+        googleSignIn(location, navigate)
     }
     return (
         

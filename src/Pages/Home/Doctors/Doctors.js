@@ -1,38 +1,26 @@
-import { Container, Grid, Typography } from '@mui/material';
-import React from 'react';
-import Mrdoctor from '../../../images/doctor-small.png';
+import { Container, Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import Doctor from "../Doctor/Doctor";
 
 const Doctors = () => {
-    return (
-        <Container sx={{mt:5}}>
-            <Typography variant='h6' sx={{my:3}} style={{color: "#46D6D8"}}>
-                Doctors
-            </Typography>
-            <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={4}>
-                   <img style={{width:'300px'}} src={Mrdoctor} alt="" />
-                   <Typography>
-                        Dr. Caudi <br />
-                        +776654993300
-                    </Typography> 
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <img style={{width:'300px'}} src={Mrdoctor} alt="" /> 
-                    <Typography>
-                        Dr. Caudi <br />
-                        +776654993388
-                    </Typography> 
-                </Grid>
-                <Grid item xs={12} sm={6} md={4}>
-                    <img style={{width:'300px'}} src={Mrdoctor} alt="" /> 
-                    <Typography>
-                        Dr. Caudi <br />
-                        +776654993333
-                    </Typography> 
-                </Grid>
-            </Grid>
-        </Container>
-    );
+  const [doctors, setDoctors] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:5000/doctors")
+      .then((res) => res.json())
+      .then((data) => setDoctors(data));
+  }, []);
+  return (
+    <div>
+      <h3> doctors: {doctors.length}</h3>
+      <Container>
+        <Grid container spacing={2}>
+          {doctors.map((doctor) => (
+            <Doctor key={doctor._id} doctor={doctor}></Doctor>
+          ))}
+        </Grid>
+      </Container>
+    </div>
+  );
 };
 
 export default Doctors;
